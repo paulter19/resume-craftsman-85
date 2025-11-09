@@ -28,7 +28,7 @@ const Builder = () => {
         position: "",
         startDate: "",
         endDate: "",
-        description: ""
+        bulletPoints: [""]
       }
     ],
     education: [
@@ -59,6 +59,47 @@ const Builder = () => {
     }));
   };
 
+  const updateExperienceBullet = (expId: string, bulletIndex: number, value: string) => {
+    setResumeData(prev => ({
+      ...prev,
+      experience: prev.experience.map(exp =>
+        exp.id === expId
+          ? {
+              ...exp,
+              bulletPoints: exp.bulletPoints.map((bullet, idx) =>
+                idx === bulletIndex ? value : bullet
+              )
+            }
+          : exp
+      )
+    }));
+  };
+
+  const addExperienceBullet = (expId: string) => {
+    setResumeData(prev => ({
+      ...prev,
+      experience: prev.experience.map(exp =>
+        exp.id === expId
+          ? { ...exp, bulletPoints: [...exp.bulletPoints, ""] }
+          : exp
+      )
+    }));
+  };
+
+  const removeExperienceBullet = (expId: string, bulletIndex: number) => {
+    setResumeData(prev => ({
+      ...prev,
+      experience: prev.experience.map(exp =>
+        exp.id === expId
+          ? {
+              ...exp,
+              bulletPoints: exp.bulletPoints.filter((_, idx) => idx !== bulletIndex)
+            }
+          : exp
+      )
+    }));
+  };
+
   const updateEducation = (id: string, field: string, value: string) => {
     setResumeData(prev => ({
       ...prev,
@@ -77,7 +118,7 @@ const Builder = () => {
         position: "",
         startDate: "",
         endDate: "",
-        description: ""
+        bulletPoints: [""]
       }]
     }));
   };
@@ -252,13 +293,38 @@ const Builder = () => {
                       </div>
                     </div>
                     <div>
-                      <Label>Description</Label>
-                      <Textarea
-                        value={exp.description}
-                        onChange={(e) => updateExperience(exp.id, "description", e.target.value)}
-                        placeholder="Describe your responsibilities and achievements..."
-                        rows={3}
-                      />
+                      <div className="flex items-center justify-between mb-2">
+                        <Label>Key Achievements & Responsibilities</Label>
+                        <Button
+                          type="button"
+                          onClick={() => addExperienceBullet(exp.id)}
+                          variant="outline"
+                          size="sm"
+                        >
+                          Add Bullet
+                        </Button>
+                      </div>
+                      <div className="space-y-2">
+                        {exp.bulletPoints.map((bullet, bulletIdx) => (
+                          <div key={bulletIdx} className="flex gap-2">
+                            <Input
+                              value={bullet}
+                              onChange={(e) => updateExperienceBullet(exp.id, bulletIdx, e.target.value)}
+                              placeholder="Achievement or responsibility..."
+                            />
+                            {exp.bulletPoints.length > 1 && (
+                              <Button
+                                type="button"
+                                onClick={() => removeExperienceBullet(exp.id, bulletIdx)}
+                                variant="outline"
+                                size="sm"
+                              >
+                                Remove
+                              </Button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -319,18 +385,45 @@ const Builder = () => {
 
             {/* Skills */}
             <Card className="p-6">
-              <h3 className="font-semibold mb-4">Skills</h3>
-              <div>
-                <Label>Add your skills (comma-separated)</Label>
-                <Textarea
-                  value={resumeData.skills.join(", ")}
-                  onChange={(e) => {
-                    const skills = e.target.value.split(",").map(s => s.trim()).filter(Boolean);
-                    setResumeData(prev => ({ ...prev, skills }));
-                  }}
-                  placeholder="JavaScript, React, Node.js, Python, etc."
-                  rows={3}
-                />
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold">Skills</h3>
+                <Button
+                  onClick={() => setResumeData(prev => ({ ...prev, skills: [...prev.skills, ""] }))}
+                  variant="outline"
+                  size="sm"
+                >
+                  Add Skill
+                </Button>
+              </div>
+              <div className="space-y-2">
+                {resumeData.skills.map((skill, idx) => (
+                  <div key={idx} className="flex gap-2">
+                    <Input
+                      value={skill}
+                      onChange={(e) => {
+                        setResumeData(prev => ({
+                          ...prev,
+                          skills: prev.skills.map((s, i) => i === idx ? e.target.value : s)
+                        }));
+                      }}
+                      placeholder="e.g., JavaScript, React, Leadership"
+                    />
+                    {resumeData.skills.length > 1 && (
+                      <Button
+                        onClick={() => {
+                          setResumeData(prev => ({
+                            ...prev,
+                            skills: prev.skills.filter((_, i) => i !== idx)
+                          }));
+                        }}
+                        variant="outline"
+                        size="sm"
+                      >
+                        Remove
+                      </Button>
+                    )}
+                  </div>
+                ))}
               </div>
             </Card>
           </div>

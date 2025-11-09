@@ -12,7 +12,7 @@ export interface Experience {
   position: string;
   startDate: string;
   endDate: string;
-  description: string;
+  bulletPoints: string[];
 }
 
 export interface Education {

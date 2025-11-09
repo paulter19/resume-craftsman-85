@@ -23,7 +23,7 @@ export const ResumePreview = ({ data, template }: ResumePreviewProps) => {
         <p className="text-sm text-muted-foreground">Preview</p>
       </div>
       <div className="p-8 print:p-0">
-        <div className="bg-white text-gray-900 aspect-[8.5/11] overflow-auto shadow-inner">
+        <div className="bg-white text-gray-900 aspect-[8.5/11] overflow-auto shadow-inner print:shadow-none print:aspect-auto">
           <Template data={data} />
         </div>
       </div>
