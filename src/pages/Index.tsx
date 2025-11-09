@@ -54,6 +54,7 @@ const Index = () => {
             <Button 
               size="lg"
               variant="outline"
+              onClick={() => navigate("/templates")}
               className="text-lg px-8"
             >
               View Templates

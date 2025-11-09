@@ -11,7 +11,7 @@ import { ResumeData } from "@/types/resume";
 
 const Builder = () => {
   const navigate = useNavigate();
-  const [template, setTemplate] = useState<"modern" | "classic" | "minimal">("modern");
+  const [template, setTemplate] = useState<"modern" | "classic" | "minimal" | "professional" | "creative" | "executive">("modern");
   
   const [resumeData, setResumeData] = useState<ResumeData>({
     personalInfo: {
@@ -173,7 +173,7 @@ const Builder = () => {
             <Card className="p-6">
               <h3 className="font-semibold mb-4">Choose Template</h3>
               <div className="grid grid-cols-3 gap-3">
-                {(["modern", "classic", "minimal"] as const).map((t) => (
+                {(["modern", "classic", "minimal", "professional", "creative", "executive"] as const).map((t) => (
                   <button
                     key={t}
                     onClick={() => setTemplate(t)}

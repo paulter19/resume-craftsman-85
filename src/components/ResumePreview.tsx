@@ -2,17 +2,23 @@ import { ResumeData } from "@/types/resume";
 import { ModernTemplate } from "./templates/ModernTemplate";
 import { ClassicTemplate } from "./templates/ClassicTemplate";
 import { MinimalTemplate } from "./templates/MinimalTemplate";
+import { ProfessionalTemplate } from "./templates/ProfessionalTemplate";
+import { CreativeTemplate } from "./templates/CreativeTemplate";
+import { ExecutiveTemplate } from "./templates/ExecutiveTemplate";
 
 interface ResumePreviewProps {
   data: ResumeData;
-  template: "modern" | "classic" | "minimal";
+  template: "modern" | "classic" | "minimal" | "professional" | "creative" | "executive";
 }
 
 export const ResumePreview = ({ data, template }: ResumePreviewProps) => {
   const templates = {
     modern: ModernTemplate,
     classic: ClassicTemplate,
-    minimal: MinimalTemplate
+    minimal: MinimalTemplate,
+    professional: ProfessionalTemplate,
+    creative: CreativeTemplate,
+    executive: ExecutiveTemplate
   };
 
   const Template = templates[template];
