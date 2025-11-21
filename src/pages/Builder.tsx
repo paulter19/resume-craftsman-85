@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,9 +8,11 @@ import { ArrowLeft, Download } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ResumePreview } from "@/components/ResumePreview";
 import { ResumeData } from "@/types/resume";
+import html2pdf from "html2pdf.js";
 
 const Builder = () => {
   const navigate = useNavigate();
+  const resumeRef = useRef<HTMLDivElement>(null);
   const [template, setTemplate] = useState<"modern" | "classic" | "minimal" | "professional" | "creative" | "executive">("modern");
   
   const [resumeData, setResumeData] = useState<ResumeData>({
@@ -136,8 +138,18 @@ const Builder = () => {
     }));
   };
 
-  const handlePrint = () => {
-    window.print();
+  const handleDownloadPDF = () => {
+    if (!resumeRef.current) return;
+
+    const opt = {
+      margin: 0,
+      filename: `${resumeData.personalInfo.fullName || 'resume'}.pdf`,
+      image: { type: 'jpeg' as const, quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' as const }
+    };
+
+    html2pdf().set(opt).from(resumeRef.current).save();
   };
 
   return (
@@ -153,7 +165,7 @@ const Builder = () => {
             <ArrowLeft className="h-4 w-4" />
             Back
           </Button>
-          <Button onClick={handlePrint} className="gap-2 bg-gradient-to-r from-primary to-accent">
+          <Button onClick={handleDownloadPDF} className="gap-2 bg-gradient-to-r from-primary to-accent">
             <Download className="h-4 w-4" />
             Download PDF
           </Button>
@@ -430,7 +442,7 @@ const Builder = () => {
 
           {/* Preview Section */}
           <div className="lg:sticky lg:top-24 lg:h-fit">
-            <ResumePreview data={resumeData} template={template} />
+            <ResumePreview data={resumeData} template={template} resumeRef={resumeRef} />
           </div>
         </div>
       </div>

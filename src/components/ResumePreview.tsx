@@ -5,13 +5,15 @@ import { MinimalTemplate } from "./templates/MinimalTemplate";
 import { ProfessionalTemplate } from "./templates/ProfessionalTemplate";
 import { CreativeTemplate } from "./templates/CreativeTemplate";
 import { ExecutiveTemplate } from "./templates/ExecutiveTemplate";
+import { RefObject } from "react";
 
 interface ResumePreviewProps {
   data: ResumeData;
   template: "modern" | "classic" | "minimal" | "professional" | "creative" | "executive";
+  resumeRef?: RefObject<HTMLDivElement>;
 }
 
-export const ResumePreview = ({ data, template }: ResumePreviewProps) => {
+export const ResumePreview = ({ data, template, resumeRef }: ResumePreviewProps) => {
   const templates = {
     modern: ModernTemplate,
     classic: ClassicTemplate,
@@ -29,7 +31,10 @@ export const ResumePreview = ({ data, template }: ResumePreviewProps) => {
         <p className="text-sm text-muted-foreground">Preview</p>
       </div>
       <div className="p-8 print:p-0">
-        <div className="bg-white text-gray-900 aspect-[8.5/11] overflow-auto shadow-inner print:shadow-none print:aspect-auto">
+        <div 
+          ref={resumeRef}
+          className="bg-white text-gray-900 aspect-[8.5/11] overflow-auto shadow-inner print:shadow-none print:aspect-auto"
+        >
           <Template data={data} />
         </div>
       </div>
