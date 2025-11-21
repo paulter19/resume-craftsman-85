@@ -4,15 +4,24 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Download, RotateCcw } from "lucide-react";
+import { ArrowLeft, Download, RotateCcw, Palette } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ResumePreview } from "@/components/ResumePreview";
 import { ResumeData } from "@/types/resume";
+import { TemplateCustomization, defaultCustomization } from "@/types/templateCustomization";
 import html2pdf from "html2pdf.js";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const STORAGE_KEY = "resumeBuilderData";
 const TEMPLATE_KEY = "resumeBuilderTemplate";
+const CUSTOMIZATION_KEY = "resumeBuilderCustomization";
 
 const initialResumeData: ResumeData = {
     personalInfo: {
@@ -73,6 +82,18 @@ const Builder = () => {
     return initialResumeData;
   });
 
+  const [customization, setCustomization] = useState<TemplateCustomization>(() => {
+    const saved = localStorage.getItem(CUSTOMIZATION_KEY);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return defaultCustomization;
+      }
+    }
+    return defaultCustomization;
+  });
+
   // Save to localStorage whenever data changes
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(resumeData));
@@ -82,6 +103,11 @@ const Builder = () => {
   useEffect(() => {
     localStorage.setItem(TEMPLATE_KEY, template);
   }, [template]);
+
+  // Save customization to localStorage
+  useEffect(() => {
+    localStorage.setItem(CUSTOMIZATION_KEY, JSON.stringify(customization));
+  }, [customization]);
 
   const updatePersonalInfo = (field: string, value: string) => {
     setResumeData(prev => ({
@@ -193,8 +219,10 @@ const Builder = () => {
   const handleStartOver = () => {
     setResumeData(initialResumeData);
     setTemplate("modern");
+    setCustomization(defaultCustomization);
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(TEMPLATE_KEY);
+    localStorage.removeItem(CUSTOMIZATION_KEY);
     toast({
       title: "Resume cleared",
       description: "Starting with a fresh resume",
@@ -253,6 +281,172 @@ const Builder = () => {
                     {t}
                   </button>
                 ))}
+              </div>
+            </Card>
+
+            {/* Template Customization */}
+            <Card className="p-6">
+              <h3 className="font-semibold mb-4 flex items-center gap-2">
+                <Palette className="h-4 w-4" />
+                Customize Style
+              </h3>
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="fontFamily">Font Family</Label>
+                  <Select
+                    value={customization.fontFamily}
+                    onValueChange={(value) => setCustomization(prev => ({ ...prev, fontFamily: value }))}
+                  >
+                    <SelectTrigger id="fontFamily">
+                      <SelectValue placeholder="Select font" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Inter">Inter (Modern)</SelectItem>
+                      <SelectItem value="Roboto">Roboto (Clean)</SelectItem>
+                      <SelectItem value="Playfair Display">Playfair Display (Elegant)</SelectItem>
+                      <SelectItem value="Lora">Lora (Classic)</SelectItem>
+                      <SelectItem value="Montserrat">Montserrat (Bold)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="grid grid-cols-3 gap-3">
+                  <div>
+                    <Label htmlFor="bodySize">Body Size</Label>
+                    <Input
+                      id="bodySize"
+                      type="number"
+                      min="8"
+                      max="14"
+                      value={customization.fontSize.body}
+                      onChange={(e) => setCustomization(prev => ({
+                        ...prev,
+                        fontSize: { ...prev.fontSize, body: parseInt(e.target.value) || 10 }
+                      }))}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="headingSize">Heading</Label>
+                    <Input
+                      id="headingSize"
+                      type="number"
+                      min="14"
+                      max="28"
+                      value={customization.fontSize.heading}
+                      onChange={(e) => setCustomization(prev => ({
+                        ...prev,
+                        fontSize: { ...prev.fontSize, heading: parseInt(e.target.value) || 18 }
+                      }))}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="subheadingSize">Subhead</Label>
+                    <Input
+                      id="subheadingSize"
+                      type="number"
+                      min="10"
+                      max="20"
+                      value={customization.fontSize.subheading}
+                      onChange={(e) => setCustomization(prev => ({
+                        ...prev,
+                        fontSize: { ...prev.fontSize, subheading: parseInt(e.target.value) || 14 }
+                      }))}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <Label htmlFor="primaryColor">Primary Color</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        id="primaryColor"
+                        type="color"
+                        value={customization.colors.primary}
+                        onChange={(e) => setCustomization(prev => ({
+                          ...prev,
+                          colors: { ...prev.colors, primary: e.target.value }
+                        }))}
+                        className="w-16 h-10 p-1"
+                      />
+                      <Input
+                        type="text"
+                        value={customization.colors.primary}
+                        onChange={(e) => setCustomization(prev => ({
+                          ...prev,
+                          colors: { ...prev.colors, primary: e.target.value }
+                        }))}
+                        className="flex-1"
+                        placeholder="#1e40af"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="textColor">Text Color</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        id="textColor"
+                        type="color"
+                        value={customization.colors.text}
+                        onChange={(e) => setCustomization(prev => ({
+                          ...prev,
+                          colors: { ...prev.colors, text: e.target.value }
+                        }))}
+                        className="w-16 h-10 p-1"
+                      />
+                      <Input
+                        type="text"
+                        value={customization.colors.text}
+                        onChange={(e) => setCustomization(prev => ({
+                          ...prev,
+                          colors: { ...prev.colors, text: e.target.value }
+                        }))}
+                        className="flex-1"
+                        placeholder="#1f2937"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <Label htmlFor="spacing">Spacing ({customization.spacing}px)</Label>
+                    <Input
+                      id="spacing"
+                      type="range"
+                      min="8"
+                      max="32"
+                      value={customization.spacing}
+                      onChange={(e) => setCustomization(prev => ({
+                        ...prev,
+                        spacing: parseInt(e.target.value)
+                      }))}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="lineHeight">Line Height ({customization.lineHeight})</Label>
+                    <Input
+                      id="lineHeight"
+                      type="range"
+                      min="1"
+                      max="2"
+                      step="0.1"
+                      value={customization.lineHeight}
+                      onChange={(e) => setCustomization(prev => ({
+                        ...prev,
+                        lineHeight: parseFloat(e.target.value)
+                      }))}
+                    />
+                  </div>
+                </div>
+
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => setCustomization(defaultCustomization)}
+                >
+                  Reset to Defaults
+                </Button>
               </div>
             </Card>
 
@@ -497,7 +691,7 @@ const Builder = () => {
 
           {/* Preview Section */}
           <div className="lg:sticky lg:top-24 lg:h-fit">
-            <ResumePreview data={resumeData} template={template} resumeRef={resumeRef} />
+            <ResumePreview data={resumeData} template={template} resumeRef={resumeRef} customization={customization} />
           </div>
         </div>
       </div>

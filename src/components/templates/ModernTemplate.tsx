@@ -1,20 +1,32 @@
 import { ResumeData } from "@/types/resume";
+import { TemplateCustomization, defaultCustomization } from "@/types/templateCustomization";
 
 interface TemplateProps {
   data: ResumeData;
+  customization?: TemplateCustomization;
 }
 
-export const ModernTemplate = ({ data }: TemplateProps) => {
+export const ModernTemplate = ({ data, customization = defaultCustomization }: TemplateProps) => {
   const { personalInfo, experience, education, skills } = data;
+  const { fontSize, fontFamily, colors, spacing, lineHeight } = customization;
 
   return (
-    <div className="h-full p-8 text-gray-900 bg-white text-xs leading-tight">
+    <div 
+      className="h-full bg-white" 
+      style={{ 
+        padding: `${spacing}px`,
+        fontFamily: fontFamily,
+        fontSize: `${fontSize.body}px`,
+        lineHeight: lineHeight,
+        color: colors.text
+      }}
+    >
       {/* Header */}
-      <div className="mb-4 pb-3 border-b-2 border-blue-600">
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">
+      <div style={{ marginBottom: `${spacing * 0.75}px`, paddingBottom: `${spacing * 0.5}px`, borderBottom: `2px solid ${colors.primary}` }}>
+        <h1 style={{ fontSize: `${fontSize.heading}px`, fontWeight: 'bold', marginBottom: `${spacing * 0.25}px` }}>
           {personalInfo.fullName || "Your Name"}
         </h1>
-        <div className="flex flex-wrap gap-2 text-xs text-gray-600">
+        <div className="flex flex-wrap gap-2" style={{ fontSize: `${fontSize.body}px`, opacity: 0.7 }}>
           {personalInfo.email && <span>{personalInfo.email}</span>}
           {personalInfo.phone && <span>•</span>}
           {personalInfo.phone && <span>{personalInfo.phone}</span>}
@@ -25,16 +37,16 @@ export const ModernTemplate = ({ data }: TemplateProps) => {
 
       {/* Summary */}
       {personalInfo.summary && (
-        <div className="mb-3">
-          <h2 className="text-sm font-bold text-blue-600 mb-1.5">Professional Summary</h2>
-          <p className="text-gray-700 leading-snug">{personalInfo.summary}</p>
+        <div style={{ marginBottom: `${spacing * 0.75}px` }}>
+          <h2 style={{ fontSize: `${fontSize.subheading}px`, fontWeight: 'bold', color: colors.primary, marginBottom: `${spacing * 0.375}px` }}>Professional Summary</h2>
+          <p>{personalInfo.summary}</p>
         </div>
       )}
 
       {/* Experience */}
       {experience.length > 0 && experience[0].company && (
-        <div className="mb-3">
-          <h2 className="text-sm font-bold text-blue-600 mb-1.5">Work Experience</h2>
+        <div style={{ marginBottom: `${spacing * 0.75}px` }}>
+          <h2 style={{ fontSize: `${fontSize.subheading}px`, fontWeight: 'bold', color: colors.primary, marginBottom: `${spacing * 0.375}px` }}>Work Experience</h2>
           <div className="space-y-2.5">
             {experience.map((exp) => (
               exp.company && (
@@ -64,8 +76,8 @@ export const ModernTemplate = ({ data }: TemplateProps) => {
 
       {/* Education */}
       {education.length > 0 && education[0].school && (
-        <div className="mb-3">
-          <h2 className="text-sm font-bold text-blue-600 mb-1.5">Education</h2>
+        <div style={{ marginBottom: `${spacing * 0.75}px` }}>
+          <h2 style={{ fontSize: `${fontSize.subheading}px`, fontWeight: 'bold', color: colors.primary, marginBottom: `${spacing * 0.375}px` }}>Education</h2>
           <div className="space-y-1.5">
             {education.map((edu) => (
               edu.school && (
@@ -90,12 +102,18 @@ export const ModernTemplate = ({ data }: TemplateProps) => {
       {/* Skills */}
       {skills.length > 0 && skills.filter(s => s.trim()).length > 0 && (
         <div>
-          <h2 className="text-sm font-bold text-blue-600 mb-1.5">Skills</h2>
+          <h2 style={{ fontSize: `${fontSize.subheading}px`, fontWeight: 'bold', color: colors.primary, marginBottom: `${spacing * 0.375}px` }}>Skills</h2>
           <div className="flex flex-wrap gap-1.5">
             {skills.filter(s => s.trim()).map((skill, index) => (
               <span
                 key={index}
-                className="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full text-xs"
+                style={{ 
+                  backgroundColor: `${colors.primary}20`,
+                  color: colors.primary,
+                  padding: '2px 8px',
+                  borderRadius: '999px',
+                  fontSize: `${fontSize.body}px`
+                }}
               >
                 {skill}
               </span>

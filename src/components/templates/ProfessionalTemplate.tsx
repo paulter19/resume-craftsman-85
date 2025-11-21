@@ -1,10 +1,12 @@
 import { ResumeData } from "@/types/resume";
+import { TemplateCustomization, defaultCustomization } from "@/types/templateCustomization";
 
 interface TemplateProps {
   data: ResumeData;
+  customization?: TemplateCustomization;
 }
 
-export const ProfessionalTemplate = ({ data }: TemplateProps) => {
+export const ProfessionalTemplate = ({ data, customization = defaultCustomization }: TemplateProps) => {
   const { personalInfo, experience, education, skills } = data;
 
   return (

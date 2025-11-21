@@ -1,4 +1,5 @@
 import { ResumeData } from "@/types/resume";
+import { TemplateCustomization } from "@/types/templateCustomization";
 import { ModernTemplate } from "./templates/ModernTemplate";
 import { ClassicTemplate } from "./templates/ClassicTemplate";
 import { MinimalTemplate } from "./templates/MinimalTemplate";
@@ -11,9 +12,10 @@ interface ResumePreviewProps {
   data: ResumeData;
   template: "modern" | "classic" | "minimal" | "professional" | "creative" | "executive";
   resumeRef?: RefObject<HTMLDivElement>;
+  customization?: TemplateCustomization;
 }
 
-export const ResumePreview = ({ data, template, resumeRef }: ResumePreviewProps) => {
+export const ResumePreview = ({ data, template, resumeRef, customization }: ResumePreviewProps) => {
   const templates = {
     modern: ModernTemplate,
     classic: ClassicTemplate,
@@ -35,7 +37,7 @@ export const ResumePreview = ({ data, template, resumeRef }: ResumePreviewProps)
           ref={resumeRef}
           className="bg-white text-gray-900 aspect-[8.5/11] overflow-auto shadow-inner print:shadow-none print:aspect-auto"
         >
-          <Template data={data} />
+          <Template data={data} customization={customization} />
         </div>
       </div>
     </div>
