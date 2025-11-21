@@ -1,21 +1,20 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Download } from "lucide-react";
+import { ArrowLeft, Download, RotateCcw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ResumePreview } from "@/components/ResumePreview";
 import { ResumeData } from "@/types/resume";
 import html2pdf from "html2pdf.js";
+import { useToast } from "@/hooks/use-toast";
 
-const Builder = () => {
-  const navigate = useNavigate();
-  const resumeRef = useRef<HTMLDivElement>(null);
-  const [template, setTemplate] = useState<"modern" | "classic" | "minimal" | "professional" | "creative" | "executive">("modern");
-  
-  const [resumeData, setResumeData] = useState<ResumeData>({
+const STORAGE_KEY = "resumeBuilderData";
+const TEMPLATE_KEY = "resumeBuilderTemplate";
+
+const initialResumeData: ResumeData = {
     personalInfo: {
       fullName: "",
       email: "",
@@ -43,7 +42,39 @@ const Builder = () => {
       }
     ],
     skills: []
+};
+
+const Builder = () => {
+  const navigate = useNavigate();
+  const resumeRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
+  
+  const [template, setTemplate] = useState<"modern" | "classic" | "minimal" | "professional" | "creative" | "executive">(() => {
+    const saved = localStorage.getItem(TEMPLATE_KEY);
+    return (saved as any) || "modern";
   });
+  
+  const [resumeData, setResumeData] = useState<ResumeData>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return initialResumeData;
+      }
+    }
+    return initialResumeData;
+  });
+
+  // Save to localStorage whenever data changes
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(resumeData));
+  }, [resumeData]);
+
+  // Save template to localStorage
+  useEffect(() => {
+    localStorage.setItem(TEMPLATE_KEY, template);
+  }, [template]);
 
   const updatePersonalInfo = (field: string, value: string) => {
     setResumeData(prev => ({
@@ -152,6 +183,17 @@ const Builder = () => {
     html2pdf().set(opt).from(resumeRef.current).save();
   };
 
+  const handleStartOver = () => {
+    setResumeData(initialResumeData);
+    setTemplate("modern");
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(TEMPLATE_KEY);
+    toast({
+      title: "Resume cleared",
+      description: "Starting with a fresh resume",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -165,10 +207,16 @@ const Builder = () => {
             <ArrowLeft className="h-4 w-4" />
             Back
           </Button>
-          <Button onClick={handleDownloadPDF} className="gap-2 bg-gradient-to-r from-primary to-accent">
-            <Download className="h-4 w-4" />
-            Download PDF
-          </Button>
+          <div className="flex gap-2">
+            <Button onClick={handleStartOver} variant="outline" className="gap-2">
+              <RotateCcw className="h-4 w-4" />
+              Start Over
+            </Button>
+            <Button onClick={handleDownloadPDF} className="gap-2 bg-gradient-to-r from-primary to-accent">
+              <Download className="h-4 w-4" />
+              Download PDF
+            </Button>
+          </div>
         </div>
       </header>
 
