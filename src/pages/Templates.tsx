@@ -114,7 +114,7 @@ const Templates = () => {
                         <p className="text-muted-foreground text-lg">{template.description}</p>
                       </div>
                       <Button
-                        onClick={() => navigate("/builder")}
+                        onClick={() => navigate(`/builder?template=${template.id}`)}
                         className="w-full sm:w-auto bg-gradient-to-r from-primary to-accent"
                       >
                         Use This Template

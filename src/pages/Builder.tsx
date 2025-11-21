@@ -50,6 +50,13 @@ const Builder = () => {
   const { toast } = useToast();
   
   const [template, setTemplate] = useState<"modern" | "classic" | "minimal" | "professional" | "creative" | "executive">(() => {
+    // Check URL parameter first
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlTemplate = urlParams.get('template');
+    if (urlTemplate) {
+      return urlTemplate as any;
+    }
+    // Then check localStorage
     const saved = localStorage.getItem(TEMPLATE_KEY);
     return (saved as any) || "modern";
   });
