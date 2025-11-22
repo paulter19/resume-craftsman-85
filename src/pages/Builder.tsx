@@ -233,46 +233,49 @@ const Builder = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50 print:hidden">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="container mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between gap-2">
           <Button
             variant="ghost"
             onClick={() => navigate("/")}
-            className="gap-2"
+            className="gap-1 md:gap-2 text-sm md:text-base"
+            size="sm"
           >
-            <ArrowLeft className="h-4 w-4" />
-            Back
+            <ArrowLeft className="h-3 w-3 md:h-4 md:w-4" />
+            <span className="hidden sm:inline">Back</span>
           </Button>
-          <div className="flex gap-2">
-            <Button onClick={handleStartOver} variant="outline" className="gap-2">
-              <RotateCcw className="h-4 w-4" />
-              Start Over
+          <div className="flex gap-1.5 md:gap-2">
+            <Button onClick={handleStartOver} variant="outline" className="gap-1 md:gap-2 text-xs md:text-sm" size="sm">
+              <RotateCcw className="h-3 w-3 md:h-4 md:w-4" />
+              <span className="hidden sm:inline">Start Over</span>
+              <span className="sm:hidden">Reset</span>
             </Button>
-            <Button onClick={handleDownloadPDF} className="gap-2 bg-gradient-to-r from-primary to-accent">
-              <Download className="h-4 w-4" />
-              Download PDF
+            <Button onClick={handleDownloadPDF} className="gap-1 md:gap-2 bg-gradient-to-r from-primary to-accent text-xs md:text-sm" size="sm">
+              <Download className="h-3 w-3 md:h-4 md:w-4" />
+              <span className="hidden sm:inline">Download PDF</span>
+              <span className="sm:hidden">PDF</span>
             </Button>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-6 py-8">
-        <div className="grid lg:grid-cols-2 gap-8">
+      <div className="container mx-auto px-4 md:px-6 py-4 md:py-8">
+        <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
           {/* Form Section */}
-          <div className="space-y-6 print:hidden">
+          <div className="space-y-4 md:space-y-6 print:hidden">
             <div>
-              <h2 className="text-2xl font-bold mb-2">Build Your Resume</h2>
-              <p className="text-muted-foreground">Fill in your information to create a professional resume</p>
+              <h2 className="text-xl md:text-2xl font-bold mb-1 md:mb-2">Build Your Resume</h2>
+              <p className="text-sm md:text-base text-muted-foreground">Fill in your information to create a professional resume</p>
             </div>
 
             {/* Template Selection */}
-            <Card className="p-6">
-              <h3 className="font-semibold mb-4">Choose Template</h3>
-              <div className="grid grid-cols-3 gap-3">
+            <Card className="p-4 md:p-6">
+              <h3 className="font-semibold mb-3 md:mb-4 text-sm md:text-base">Choose Template</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 md:gap-3">
                 {(["modern", "classic", "minimal", "professional", "creative", "executive"] as const).map((t) => (
                   <button
                     key={t}
                     onClick={() => setTemplate(t)}
-                    className={`p-3 rounded-lg border-2 transition-all capitalize ${
+                    className={`p-2 md:p-3 rounded-lg border-2 transition-all capitalize text-xs md:text-sm ${
                       template === t
                         ? "border-primary bg-primary/5"
                         : "border-border hover:border-primary/50"
@@ -285,12 +288,12 @@ const Builder = () => {
             </Card>
 
             {/* Template Customization */}
-            <Card className="p-6">
-              <h3 className="font-semibold mb-4 flex items-center gap-2">
-                <Palette className="h-4 w-4" />
+            <Card className="p-4 md:p-6">
+              <h3 className="font-semibold mb-3 md:mb-4 flex items-center gap-2 text-sm md:text-base">
+                <Palette className="h-3 w-3 md:h-4 md:w-4" />
                 Customize Style
               </h3>
-              <div className="space-y-4">
+              <div className="space-y-3 md:space-y-4">
                 <div>
                   <Label htmlFor="fontFamily">Font Family</Label>
                   <Select
@@ -310,9 +313,9 @@ const Builder = () => {
                   </Select>
                 </div>
                 
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 md:gap-3">
                   <div>
-                    <Label htmlFor="bodySize">Body Size</Label>
+                    <Label htmlFor="bodySize" className="text-xs md:text-sm">Body Size</Label>
                     <Input
                       id="bodySize"
                       type="number"
@@ -323,10 +326,11 @@ const Builder = () => {
                         ...prev,
                         fontSize: { ...prev.fontSize, body: parseInt(e.target.value) || 10 }
                       }))}
+                      className="text-xs md:text-sm"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="headingSize">Heading</Label>
+                    <Label htmlFor="headingSize" className="text-xs md:text-sm">Heading</Label>
                     <Input
                       id="headingSize"
                       type="number"
@@ -337,10 +341,11 @@ const Builder = () => {
                         ...prev,
                         fontSize: { ...prev.fontSize, heading: parseInt(e.target.value) || 18 }
                       }))}
+                      className="text-xs md:text-sm"
                     />
                   </div>
-                  <div>
-                    <Label htmlFor="subheadingSize">Subhead</Label>
+                  <div className="col-span-2 sm:col-span-1">
+                    <Label htmlFor="subheadingSize" className="text-xs md:text-sm">Subhead</Label>
                     <Input
                       id="subheadingSize"
                       type="number"
@@ -351,6 +356,7 @@ const Builder = () => {
                         ...prev,
                         fontSize: { ...prev.fontSize, subheading: parseInt(e.target.value) || 14 }
                       }))}
+                      className="text-xs md:text-sm"
                     />
                   </div>
                 </div>

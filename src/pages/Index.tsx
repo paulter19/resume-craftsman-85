@@ -23,39 +23,39 @@ const Index = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-6 py-20 md:py-32">
+      <section className="container mx-auto px-4 py-12 md:px-6 md:py-20 lg:py-32">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium mb-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <Sparkles className="h-4 w-4" />
+          <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-medium mb-4 md:mb-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <Sparkles className="h-3 w-3 md:h-4 md:w-4" />
             Professional Resume Builder
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
             Create Your Perfect{" "}
             <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               Resume
             </span>
           </h1>
           
-          <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700 delay-200">
+          <p className="text-base md:text-xl text-muted-foreground mb-8 md:mb-12 max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700 delay-200">
             Build professional resumes in minutes with our easy-to-use templates. 
             Stand out from the crowd and land your dream job.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
             <Button 
               size="lg"
               onClick={() => navigate("/builder")}
-              className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-lg px-8"
+              className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-base md:text-lg px-6 md:px-8"
             >
-              <Zap className="mr-2 h-5 w-5" />
+              <Zap className="mr-2 h-4 w-4 md:h-5 md:w-5" />
               Start Building
             </Button>
             <Button 
               size="lg"
               variant="outline"
               onClick={() => navigate("/templates")}
-              className="text-lg px-8"
+              className="text-base md:text-lg px-6 md:px-8"
             >
               View Templates
             </Button>
@@ -64,8 +64,8 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-      <section className="container mx-auto px-6 py-20 border-t border-border">
-        <div className="grid md:grid-cols-3 gap-8">
+      <section className="container mx-auto px-4 md:px-6 py-12 md:py-20 border-t border-border">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
           <div className="bg-card rounded-2xl p-8 border border-border shadow-sm hover:shadow-md transition-all">
             <div className="h-12 w-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
               <FileText className="h-6 w-6 text-primary" />
