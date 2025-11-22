@@ -61,41 +61,45 @@ const Templates = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="container mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
           <Button
             variant="ghost"
             onClick={() => navigate("/")}
-            className="gap-2"
+            className="gap-1 md:gap-2 text-sm md:text-base"
+            size="sm"
           >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Home
+            <ArrowLeft className="h-3 w-3 md:h-4 md:w-4" />
+            <span className="hidden sm:inline">Back to Home</span>
+            <span className="sm:hidden">Back</span>
           </Button>
           <Button 
             onClick={() => navigate("/builder")} 
-            className="gap-2 bg-gradient-to-r from-primary to-accent"
+            className="gap-1 md:gap-2 bg-gradient-to-r from-primary to-accent text-sm md:text-base"
+            size="sm"
           >
-            Start Building
+            <span className="hidden sm:inline">Start Building</span>
+            <span className="sm:hidden">Build</span>
           </Button>
         </div>
       </header>
 
       {/* Content */}
-      <div className="container mx-auto px-6 py-12">
+      <div className="container mx-auto px-4 md:px-6 py-8 md:py-12">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          <div className="text-center mb-8 md:mb-12">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4">
               Choose Your Perfect{" "}
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 Template
               </span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
               Select a professionally designed template that matches your style and industry. 
               Each template is optimized to fit perfectly on one page.
             </p>
           </div>
 
-          <div className="grid gap-8">
+          <div className="grid gap-6 md:gap-8">
             {templates.map((template) => {
               const TemplateComponent = template.component;
               return (
@@ -103,15 +107,15 @@ const Templates = () => {
                   key={template.id}
                   className="bg-card rounded-xl border border-border shadow-lg overflow-hidden hover:shadow-xl transition-all"
                 >
-                  <div className="grid lg:grid-cols-2 gap-6 p-6">
+                  <div className="grid lg:grid-cols-2 gap-4 md:gap-6 p-4 md:p-6">
                     {/* Template Info */}
-                    <div className="flex flex-col justify-center space-y-4">
+                    <div className="flex flex-col justify-center space-y-3 md:space-y-4">
                       <div>
-                        <div className={`inline-block bg-gradient-to-r ${template.color} text-white px-4 py-1 rounded-full text-sm font-semibold mb-3`}>
+                        <div className={`inline-block bg-gradient-to-r ${template.color} text-white px-3 py-0.5 md:px-4 md:py-1 rounded-full text-xs md:text-sm font-semibold mb-2 md:mb-3`}>
                           {template.name}
                         </div>
-                        <h2 className="text-2xl font-bold mb-2">{template.name} Template</h2>
-                        <p className="text-muted-foreground text-lg">{template.description}</p>
+                        <h2 className="text-xl md:text-2xl font-bold mb-1.5 md:mb-2">{template.name} Template</h2>
+                        <p className="text-muted-foreground text-sm md:text-base lg:text-lg">{template.description}</p>
                       </div>
                       <Button
                         onClick={() => navigate(`/builder?template=${template.id}`)}
@@ -122,9 +126,9 @@ const Templates = () => {
                     </div>
 
                     {/* Template Preview */}
-                    <div className="bg-gray-100 rounded-lg p-4 shadow-inner">
+                    <div className="bg-gray-100 rounded-lg p-2 md:p-4 shadow-inner max-w-sm mx-auto lg:max-w-none lg:mx-0">
                       <div className="bg-white aspect-[8.5/11] shadow-lg overflow-hidden">
-                        <div className="scale-[0.85] origin-top-left w-[117.65%] h-[117.65%]">
+                        <div className="scale-[0.35] sm:scale-[0.5] md:scale-[0.65] lg:scale-[0.85] origin-top-left w-[285.71%] sm:w-[200%] md:w-[153.85%] lg:w-[117.65%] h-[285.71%] sm:h-[200%] md:h-[153.85%] lg:h-[117.65%]">
                           <TemplateComponent data={exampleResumeData} />
                         </div>
                       </div>
