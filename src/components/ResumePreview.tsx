@@ -6,11 +6,15 @@ import { MinimalTemplate } from "./templates/MinimalTemplate";
 import { ProfessionalTemplate } from "./templates/ProfessionalTemplate";
 import { CreativeTemplate } from "./templates/CreativeTemplate";
 import { ExecutiveTemplate } from "./templates/ExecutiveTemplate";
+import { TechnicalTemplate } from "./templates/TechnicalTemplate";
+import { CompactTemplate } from "./templates/CompactTemplate";
+import { BoldTemplate } from "./templates/BoldTemplate";
+import { ElegantTemplate } from "./templates/ElegantTemplate";
 import { RefObject } from "react";
 
 interface ResumePreviewProps {
   data: ResumeData;
-  template: "modern" | "classic" | "minimal" | "professional" | "creative" | "executive";
+  template: "modern" | "classic" | "minimal" | "professional" | "creative" | "executive" | "technical" | "compact" | "bold" | "elegant";
   resumeRef?: RefObject<HTMLDivElement>;
   customization?: TemplateCustomization;
 }
@@ -22,7 +26,11 @@ export const ResumePreview = ({ data, template, resumeRef, customization }: Resu
     minimal: MinimalTemplate,
     professional: ProfessionalTemplate,
     creative: CreativeTemplate,
-    executive: ExecutiveTemplate
+    executive: ExecutiveTemplate,
+    technical: TechnicalTemplate,
+    compact: CompactTemplate,
+    bold: BoldTemplate,
+    elegant: ElegantTemplate
   };
 
   const Template = templates[template];

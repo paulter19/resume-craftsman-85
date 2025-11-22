@@ -8,6 +8,10 @@ import { MinimalTemplate } from "@/components/templates/MinimalTemplate";
 import { ProfessionalTemplate } from "@/components/templates/ProfessionalTemplate";
 import { CreativeTemplate } from "@/components/templates/CreativeTemplate";
 import { ExecutiveTemplate } from "@/components/templates/ExecutiveTemplate";
+import { TechnicalTemplate } from "@/components/templates/TechnicalTemplate";
+import { CompactTemplate } from "@/components/templates/CompactTemplate";
+import { BoldTemplate } from "@/components/templates/BoldTemplate";
+import { ElegantTemplate } from "@/components/templates/ElegantTemplate";
 
 const Templates = () => {
   const navigate = useNavigate();
@@ -54,6 +58,34 @@ const Templates = () => {
       description: "Sophisticated design for senior-level positions",
       component: ExecutiveTemplate,
       color: "from-slate-700 to-gray-900"
+    },
+    {
+      id: "technical",
+      name: "Technical",
+      description: "Developer-focused with monospace font and code aesthetics",
+      component: TechnicalTemplate,
+      color: "from-blue-600 to-blue-800"
+    },
+    {
+      id: "compact",
+      name: "Compact",
+      description: "Maximize content with efficient two-column layout",
+      component: CompactTemplate,
+      color: "from-gray-500 to-gray-700"
+    },
+    {
+      id: "bold",
+      name: "Bold",
+      description: "Make a statement with strong colors and typography",
+      component: BoldTemplate,
+      color: "from-orange-600 to-red-600"
+    },
+    {
+      id: "elegant",
+      name: "Elegant",
+      description: "Sophisticated serif design for refined professionals",
+      component: ElegantTemplate,
+      color: "from-amber-700 to-amber-900"
     }
   ];
 
