@@ -58,7 +58,7 @@ const Builder = () => {
   const resumeRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   
-  const [template, setTemplate] = useState<"modern" | "classic" | "minimal" | "professional" | "creative" | "executive">(() => {
+  const [template, setTemplate] = useState<"modern" | "classic" | "minimal" | "professional" | "creative" | "executive" | "technical" | "compact" | "bold" | "elegant">(() => {
     // Check URL parameter first
     const urlParams = new URLSearchParams(window.location.search);
     const urlTemplate = urlParams.get('template');
@@ -271,7 +271,7 @@ const Builder = () => {
             <Card className="p-4 md:p-6">
               <h3 className="font-semibold mb-3 md:mb-4 text-sm md:text-base">Choose Template</h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 md:gap-3">
-                {(["modern", "classic", "minimal", "professional", "creative", "executive"] as const).map((t) => (
+                {(["modern", "classic", "minimal", "professional", "creative", "executive", "technical", "compact", "bold", "elegant"] as const).map((t) => (
                   <button
                     key={t}
                     onClick={() => setTemplate(t)}
