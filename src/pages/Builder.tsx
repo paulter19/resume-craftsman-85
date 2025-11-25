@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import * as analytics from "@/lib/analytics";
 
 const STORAGE_KEY = "resumeBuilderData";
 const TEMPLATE_KEY = "resumeBuilderTemplate";
@@ -63,6 +64,7 @@ const Builder = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const urlTemplate = urlParams.get('template');
     if (urlTemplate) {
+      analytics.trackBuilderStart(urlTemplate);
       return urlTemplate as any;
     }
     // Then check localStorage
@@ -205,18 +207,21 @@ const Builder = () => {
   const handleDownloadPDF = () => {
     if (!resumeRef.current) return;
 
+    const filename = `${resumeData.personalInfo.fullName || 'resume'}.pdf`;
     const opt = {
       margin: 0,
-      filename: `${resumeData.personalInfo.fullName || 'resume'}.pdf`,
+      filename: filename,
       image: { type: 'jpeg' as const, quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true },
       jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' as const }
     };
 
+    analytics.trackDownload(template, filename);
     html2pdf().set(opt).from(resumeRef.current).save();
   };
 
   const handleStartOver = () => {
+    analytics.trackStartOver();
     setResumeData(initialResumeData);
     setTemplate("modern");
     setCustomization(defaultCustomization);
@@ -274,7 +279,10 @@ const Builder = () => {
                 {(["modern", "classic", "minimal", "professional", "creative", "executive", "technical", "compact", "bold", "elegant"] as const).map((t) => (
                   <button
                     key={t}
-                    onClick={() => setTemplate(t)}
+                    onClick={() => {
+                      setTemplate(t);
+                      analytics.trackTemplateSelection(t);
+                    }}
                     className={`p-2 md:p-3 rounded-lg border-2 transition-all capitalize text-xs md:text-sm ${
                       template === t
                         ? "border-primary bg-primary/5"

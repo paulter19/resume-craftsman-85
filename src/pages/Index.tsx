@@ -1,9 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { FileText, Sparkles, Download, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import * as analytics from "@/lib/analytics";
 
 const Index = () => {
   const navigate = useNavigate();
+
+  // Track page view
+  useEffect(() => {
+    analytics.pageview('/');
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">

@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { exampleResumeData } from "@/data/exampleResume";
+import { useEffect } from "react";
+import * as analytics from "@/lib/analytics";
 import { ModernTemplate } from "@/components/templates/ModernTemplate";
 import { ClassicTemplate } from "@/components/templates/ClassicTemplate";
 import { MinimalTemplate } from "@/components/templates/MinimalTemplate";
@@ -15,6 +17,11 @@ import { ElegantTemplate } from "@/components/templates/ElegantTemplate";
 
 const Templates = () => {
   const navigate = useNavigate();
+
+  // Track page view
+  useEffect(() => {
+    analytics.pageview('/templates');
+  }, []);
 
   const templates = [
     {
